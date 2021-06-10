@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.caelum.leilao.builder.CriadorDeLeilao;
 import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
@@ -30,11 +31,8 @@ public class TesteAvaliador {
     @Test
     public void deveEntenderLancesEmOrdemCrescente() {
 
-        Leilao leilao = new Leilao("Playstation 3 Novo");
-
-        leilao.propoe(new Lance(joao, 250.0));
-        leilao.propoe(new Lance(jose, 300.0));
-        leilao.propoe(new Lance(maria, 400.0));
+        Leilao leilao = new CriadorDeLeilao().para("Playstation 3 Novo").lance(joao, 250.0).lance(jose, 300.0)
+                .lance(maria, 400.0).constroi();
 
         leiloeiro.avalia(leilao);
 
@@ -51,11 +49,8 @@ public class TesteAvaliador {
     @Test
     public void deveEntenderLancesEmOrdemCrescenteComOutrosValores() {
 
-        Leilao leilao = new Leilao("Playstation 3 Novo");
-
-        leilao.propoe(new Lance(joao, 1000.0));
-        leilao.propoe(new Lance(jose, 3000.0));
-        leilao.propoe(new Lance(maria, 2000.0));
+        Leilao leilao = new CriadorDeLeilao().para("Playstation 3 Novo").lance(joao, 1000.0).lance(jose, 2000.0)
+                .lance(maria, 3000.0).constroi();
 
         leiloeiro.avalia(leilao);
 
@@ -72,9 +67,7 @@ public class TesteAvaliador {
     @Test
     public void deveEntenderLeilaoComApenasUmLance() {
 
-        Leilao leilao = new Leilao("Playstation 3 Novo");
-
-        leilao.propoe(new Lance(jose, 1000.0));
+        Leilao leilao = new CriadorDeLeilao().para("Playstation 3 Novo").lance(jose, 1000.0).constroi();
 
         leiloeiro.avalia(leilao);
 
@@ -86,12 +79,8 @@ public class TesteAvaliador {
     @Test
     public void deveEncontrarOsTresMaioresLances() {
 
-        Leilao leilao = new Leilao("Playstation 3 Novo");
-
-        leilao.propoe(new Lance(joao, 100.0));
-        leilao.propoe(new Lance(maria, 200.0));
-        leilao.propoe(new Lance(joao, 300.0));
-        leilao.propoe(new Lance(maria, 400.0));
+        Leilao leilao = new CriadorDeLeilao().para("Playstation 3 Novo").lance(joao, 100.0).lance(maria, 200.0)
+                .lance(joao, 300.0).lance(maria, 400.0).constroi();
 
         leiloeiro.avalia(leilao);
 
