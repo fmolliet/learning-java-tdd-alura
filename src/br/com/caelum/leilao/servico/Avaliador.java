@@ -9,66 +9,70 @@ import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 
 public class Avaliador {
-	
-	private double maiorDeTodos = Double.NEGATIVE_INFINITY ;
-	private double menorDeTodos = Double.POSITIVE_INFINITY ;
-	
+
+	private double maiorDeTodos = Double.NEGATIVE_INFINITY;
+	private double menorDeTodos = Double.POSITIVE_INFINITY;
+
 	private double media = 0;
-	private List<Lance> maiores;   
+	private List<Lance> maiores;
 
 	public List<Lance> getTresMaiores() {
 		return maiores;
 	}
 
-	public void avalia( Leilao leilao ) {
-		
+	public void avalia(Leilao leilao) {
+
 		double total = 0;
-		
-		for( Lance lance : leilao.getLances()) {
-			
-			if ( lance.getValor() > maiorDeTodos) maiorDeTodos = lance.getValor();
-			if(lance.getValor() < menorDeTodos ) menorDeTodos = lance.getValor();
+
+		if (leilao.getLances().size() == 0) {
+			throw new RuntimeException("Não é possivel avaliar um leilão sem lances!");
+		}
+
+		for (Lance lance : leilao.getLances()) {
+
+			if (lance.getValor() > maiorDeTodos)
+				maiorDeTodos = lance.getValor();
+			if (lance.getValor() < menorDeTodos)
+				menorDeTodos = lance.getValor();
 			total += lance.getValor();
 		}
-		
-		 pegaOsMaioresNo(leilao);
-		
-		
-		
-		if(total == 0) {
-            media = 0;
-            return;
-        }
-        media = total / leilao.getLances().size();
+
+		pegaOsMaioresNo(leilao);
+
+		if (total == 0) {
+			media = 0;
+			return;
+		}
+		media = total / leilao.getLances().size();
 	}
-	
+
 	private void pegaOsMaioresNo(Leilao leilao) {
 		maiores = new ArrayList<Lance>(leilao.getLances());
-		
+
 		Collections.sort(maiores, new Comparator<Lance>() {
 
 			public int compare(Lance o1, Lance o2) {
-				if ( o1.getValor() < o2.getValor()) return 1;
-				if ( o1.getValor() > o2.getValor()) return -1;
+				if (o1.getValor() < o2.getValor())
+					return 1;
+				if (o1.getValor() > o2.getValor())
+					return -1;
 				return 0;
 			}
 		});
-		
+
 		maiores = maiores.subList(0, maiores.size() > 3 ? 3 : maiores.size());
-    }
-	
+	}
+
 	public double getMaiorLance() {
 		return maiorDeTodos;
 	}
-	
+
 	public double getMenorLance() {
 		return menorDeTodos;
 	}
-	
-	public double getMedia() {
-		return media; 
-	}
-	
 
-	
+	public double getMedia() {
+		return media;
+	}
+
 }
